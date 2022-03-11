@@ -1,21 +1,25 @@
-SRCDIR = src/
-BUILDDIR = build/
+SRCDIR = ./src
+SRCFILES = $(wildcard $(SRCDIR)/*)
 
-SRCMAIN = $(SRCDIR)main.tex
-
-## Output file name (.pdf automatically included) ##
 OUTNAME = resume
+OUTDIR = ./build
+OUTFILE = $(OUTDIR)/$(OUTNAME).pdf
 
-resume: $(BUILDDIR)
-	pdflatex -output-directory=$(BUILDDIR) -jobname=$(OUTNAME) $(SRCMAIN)
+.PHONY: default
+default: $(OUTFILE)
 
-$(BUILDDIR):
-	mkdir -p $(BUILDDIR)
+$(OUTFILE): $(SRCFILES)
+	docker build \
+	--target resume \
+	--output $(OUTDIR) \
+	--build-arg OUTNAME=$(OUTNAME) \
+	.
 
 ## Ubuntu specific/Requires evince ##
-view: resume
-	evince build/resume.pdf
+.PHONY: view
+view: $(OUTFILE)
+	evince $(OUTFILE)
 
 .PHONY: clean
-clean:
-	rm -rf $(BUILDDIR)
+clean: $(OUTDIR)
+	rm -rf $(OUTDIR)
