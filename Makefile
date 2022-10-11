@@ -15,10 +15,9 @@ $(OUTFILE): $(SRCFILES)
 	--build-arg OUTNAME=$(OUTNAME) \
 	.
 
-## Ubuntu specific/Requires evince ##
 .PHONY: view
 view: $(OUTFILE)
-	evince $(OUTFILE)
+	xdg-open $(OUTFILE)
 
 .PHONY: clean
 clean: $(OUTDIR)
