@@ -20,4 +20,4 @@ RUN mkdir -p ../build && \
 
 
 FROM scratch AS resume
-COPY --from=0 /build/* .
+COPY --from=0 /build/* ./
